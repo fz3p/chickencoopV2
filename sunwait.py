@@ -18,14 +18,12 @@ class poulailler(object):
 
 	def __init__(self, horizon, latitude, longitude):
 		""" calcul automatiquement le prochain lever de soleil et le prochain coucher de soleil """
-
-		
+	
 		def _listDate(date):
 			""" convertir la date ephem en date datetime et rajoute le décalage horaire """
 			# recupérationd des éléments de la date
-			regex = re.compile("(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2})")
+			regex = re.compile(r"(\d{4})/(\d{,})/(\d{1,}) (\d{2}):(\d{2}):(\d{2})")
 			match = regex.findall(date)
-
 			# on converti le tuple en liste 
 			liste = list(sum(match, ())) 
 			l = []
@@ -35,43 +33,28 @@ class poulailler(object):
 			#traitement heure d'été/hiver
 			decalageHoraire = time.localtime().tm_hour - time.gmtime().tm_hour
 			newDate = datetime(l[0], l[1], l[2], l[3]+decalageHoraire, l[4], l[5])
-
 			return newDate
-
 		
 		def _position(self):
 			"""	position du poullailler """
 			localisation = ephem.Observer()
 			localisation.horizon, localisation.lat, localisation.long = self.horizon, self.latitude, self.longitude
 			localisation.date = ephem.Date(datetime.now())
-			self._position = localisation
-			return self._position; 
-
+			return localisation
 		
 		def sunrise(self):
 			""" lever du soleil """
-			hour = self._position.next_rising(ephem.Sun())
-			self.lever = _listDate(str(hour))
-			return self.lever;
-
+			hour = self.position.next_rising(ephem._sun)
+			return _listDate(str(hour))
 		
 		def sunset(self):
 			""" coucher du soleil """
-			hour = self._position.next_setting(ephem.Sun())
-			self.coucher = _listDate(str(hour))
-			return self.coucher;
+			hour = self.position.next_setting(ephem._sun)
+			return _listDate(str(hour))
 
 		self.horizon = horizon
 		self.latitude = latitude
 		self.longitude = longitude
-		self._position = _position(self)
+		self.position = _position(self)
 		self.lever = sunrise(self)
 		self.coucher = sunset(self)
-		
-
-
-
-coq = poulailler('-12', '48.39', '-1.06')
-print(coq.coucher)
-print(coq.lever)
-help(coq)
