@@ -51,6 +51,15 @@ class poulailler(object):
 			""" coucher du soleil """
 			hour = self.position.next_setting(ephem._sun)
 			return _listDate(str(hour))
+		
+		def stateDoor(self):
+			""" détermine si la porte est ouverte ou fermée en fonction de l'horaire """
+			if self.lever.hour < self.heure.hour <self.coucher.hour:
+				state = "opened"
+			else:
+				state = "closed"
+			return state
+
 
 		self.horizon = horizon
 		self.latitude = latitude
@@ -58,3 +67,11 @@ class poulailler(object):
 		self.position = _position(self)
 		self.lever = sunrise(self)
 		self.coucher = sunset(self)
+		self.heure = datetime.now()
+		self.porte = stateDoor(self)
+
+
+coq = poulailler('-6', '48', '-1.06')
+print(coq.coucher)
+print(coq.heure)
+print(coq.porte)
