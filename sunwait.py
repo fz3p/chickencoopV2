@@ -5,15 +5,20 @@ import ephem
 import re
 from datetime import datetime
 import time
+import os
 
 
 class poulailler(object):
 	"""docstring for poulailler
-	- horizon (-6 pour civil, -12 nautique, -18 pour astronomique)
-	- latitude (par ex 48.35)
-	- longitude (par ex -1.06)
-	- lever du soleil
-	- coucher coucher du soleil
+	- horizon : -6 pour civil, -12 nautique, -18 pour astronomique
+	- latitude : par exemple 48.35)
+	- longitude : par exemple -1.06
+	- lever : horaire de lever du soleil
+	- coucher : horaire de coucher du soleil
+	- heure : heure actuelle
+	- porte : état dans lequel la porte devrait être
+	- checkState() : vérifie si la porte est dans le bon état
+	- check : dernier état connu de la porte
 	"""
 
 	def __init__(self, horizon, latitude, longitude):
@@ -69,9 +74,45 @@ class poulailler(object):
 		self.coucher = sunset(self)
 		self.heure = datetime.now()
 		self.porte = stateDoor(self)
+		self.check = ''
+	
+	def checkState(self):
+		""" vérifie si le statut de la porte correspond bien à celui qu'elle devrait avoir."""
+		# statut de la porte souhaité
+		statut = self.porte
 
+		# on test si le fichier de statut existe
+		if os.path.exists('statut.txt') == False:
+			os.system("touch statut.txt")
 
-coq = poulailler('-6', '48', '-1.06')
-print(coq.coucher)
-print(coq.heure)
-print(coq.porte)
+		# statut de la porte réél 
+		file = open("statut.txt", "r")
+		saveStatut = file.readline()
+		file.close()
+
+		# controle et changement si nécessaire
+		if statut != saveStatut:
+			if statut == 'opened':
+				self._open()
+			elif statut == 'closed':
+				self._close()
+		
+		self.check = statut
+		return self
+	
+	"""ferme la porte"""
+	def _close(self):
+		file = open('statut.txt', "w")
+		file.write('closed')
+		file.close()
+	
+	"""ouvre la porte"""
+	def _open(self):
+		file = open('statut.txt', "w")
+		file.write('opened')
+		file.close()
+
+if __name__ == '__main__':
+	coq = poulailler('-6', '48.35', '-1.06')
+	coq.checkState()
+	print(coq.check)	
