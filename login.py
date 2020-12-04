@@ -4,7 +4,7 @@
 import os
 import csv
 
-class login(object):
+class init(object):
     """ récupère les identifiants dans un fichier séparé """
     def __init__(self):
 
@@ -15,9 +15,30 @@ class login(object):
                     self.bot = row[1]
                 elif row[0] == 'IDCHAT':
                     self.chatID = row[1]
-
+                elif row[0] == 'HORIZON':
+                    self.horizon = row[1]
+                elif row[0] == 'LATITUDE':
+                    self.latitude = row[1]
+                elif row[0] == 'LONGITUDE':
+                    self.longitude = row[1]
+                elif row[0] == 'GPIOUP':
+                    self.gpioUp = row[1]
+                elif row[0] == 'GPIODOWN':
+                    self.gpioDown = row[1]
+                elif row[0] == 'NAME':
+                    self.name = row[1]
+        
 
 if __name__ == '__main__': 
-    id = login()
+    id = init()
     print(id.bot)
     print(id.chatID)
+    print(id.horizon)
+    print(id.latitude)
+    print(id.longitude)
+    print(id.gpioUp)
+    print(id.gpioDown)
+    print(id.name)
+
+
+
