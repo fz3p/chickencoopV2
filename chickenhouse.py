@@ -58,6 +58,12 @@ class init(object):
 			hour = self.position.next_setting(ephem._sun)
 			return _listDate(str(hour))
 		
+		def gpio():
+			gpio.setmode(gpio.BCM)
+			gpio.setwarnings(False)
+			gpio.setup(id.gpioUp, gpio.OUT)
+			gpio.setup(id.gpioDown, gpio.OUT)
+		
 		id = login.init()
 
 		self.horizon = id.horizon
@@ -69,8 +75,6 @@ class init(object):
 		self.heure = datetime.now()
 		self.porte = ''
 		self.nom = id.name
-		self.gpioUp = id.gpioUp
-		self.gpioDown = id.gpioDown
 	
 
 	def stateDoor(self):
@@ -82,14 +86,20 @@ class init(object):
 		return self
 
 	def close(self):
-		#to do
+		gpio.output(id.gpioDown, gpio.HIGH)
+		gpio.output(id.gpioUp, gpio.LOW)
+		time.sleep(45)
 		pass
 	
 	def open(self):
-		#to do
+		gpio.output(id.gpioUp, gpio.HIGH)
+		gpio.output(id.gpioDown, gpio.LOW)
+		time.sleep(45)
 		pass
 
 if __name__ == '__main__':
 	coq = init()
 	print(coq.porte)
+	print(coq.coucher)
+	print(coq.lever)
 	print(coq.stateDoor().porte)
