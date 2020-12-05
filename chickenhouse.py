@@ -13,14 +13,22 @@ import telegram
 
 class init(object):
 	"""docstring for chickenhouse
-	- horizon : -6 pour civil, -12 nautique, -18 pour astronomique
-	- latitude : par exemple 48.35)
-	- longitude : par exemple -1.06
+	
+	Attributs
+	- id : charge les informations du fichier des identifiants
+	- position : intègre la localisation de ephem
 	- lever : horaire de lever du soleil
 	- coucher : horaire de coucher du soleil
 	- heure : heure actuelle
 	- porte : état dans lequel la porte devrait être
 	- nom : nom du poulailler
+	- telegram : charge les informations d'envoi à télégram
+
+	Fonctions
+	- stateDoor : indique le statut du prochain évènement
+	- open() : ouvre la porte
+	- close() : ferme la porte
+	- modifieState() : change le statut de la porte à l'heure du prochain évènement
 	"""
 
 	def __init__(self):
@@ -93,7 +101,7 @@ class init(object):
 		# fermeture de la porte
 		gpio.output(self.id.gpioDown, gpio.HIGH)
 		gpio.output(self.id.gpioUp, gpio.LOW)
-		ctrl = gpio.wait_for_edge(int(self.id.gpioDownCtrl), gpio.FALLING, timeout=self.id.lentghDown*100)
+		ctrl = gpio.wait_for_edge(self.id.gpioDownCtrl, gpio.FALLING, timeout=self.id.lengthDown*100)
 
 		# si le temps est épuisé
 		if ctrl is None:
@@ -131,7 +139,7 @@ class init(object):
 		gpio.cleanup()
 
 	def modifieState(self):
-		""" Ouverture/Fermeture de la porte """
+		""" Ouverture/Fermeture de la porte à l'heure du prochain évènement"""
 
 		# On calcule le temps d'attente avant la prochain action
 		liste = [self.lever, self.coucher]

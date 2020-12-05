@@ -32,7 +32,7 @@ class init(object):
                 elif row[0] == 'LENGTHUP':
                     self.lengthUp = int(row[1])
                 elif row[0] == 'LENGTHDOWN':
-                    self.lentghDown = int(row[1])
+                    self.lengthDown = int(row[1])
                 elif row[0] == 'NAME':
                     self.name = row[1]
         
