@@ -46,7 +46,7 @@ class init(object):
 		def _position(self):
 			"""	position du poullailler """
 			localisation = ephem.Observer()
-			localisation.horizon, localisation.lat, localisation.long = self.horizon, self.latitude, self.longitude
+			localisation.horizon, localisation.lat, localisation.long = self.id.horizon, self.id.latitude, self.id.longitude
 			localisation.date = ephem.Date(datetime.now())
 			return localisation
 		
