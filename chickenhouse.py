@@ -134,7 +134,7 @@ class init(object):
 		""" Ouverture/Fermeture de la porte """
 
 		# On calcule le temps d'attente avant la prochain action
-		liste = [coq.lever, coq.coucher]
+		liste = [self.lever, self.coucher]
 		liste.sort()
 		wait = int(liste[0].timestamp()) - int(datetime.now().timestamp()) 
 		self.telegram.send("Prochaine action de " + self.nom + " à " + str(liste[0]))
