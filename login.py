@@ -25,6 +25,14 @@ class init(object):
                     self.gpioUp = row[1]
                 elif row[0] == 'GPIODOWN':
                     self.gpioDown = row[1]
+                elif row[0] == 'GPIOUPCTRL':
+                    self.gpioUpCtrl = row[1]
+                elif row[0] == 'GPIODOWNCTRL':
+                    self.gpioDownCtrl = row[1]
+                elif row[0] == 'LENGTHUP':
+                    self.lengthUp = row[1]
+                elif row[0] == 'LENGTHDOWN':
+                    self.lentghDown = row[1]
                 elif row[0] == 'NAME':
                     self.name = row[1]
         

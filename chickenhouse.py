@@ -7,6 +7,8 @@ from datetime import datetime
 import time
 import os
 import login
+import RPi.GPIO as gpio
+import telegram
 
 
 class init(object):
@@ -58,24 +60,16 @@ class init(object):
 			hour = self.position.next_setting(ephem._sun)
 			return _listDate(str(hour))
 		
-		def gpio():
-			gpio.setmode(gpio.BCM)
-			gpio.setwarnings(False)
-			gpio.setup(id.gpioUp, gpio.OUT)
-			gpio.setup(id.gpioDown, gpio.OUT)
-		
-		id = login.init()
 
-		self.horizon = id.horizon
-		self.latitude = id.latitude
-		self.longitude = id.longitude
+		self.id = login.init()
 		self.position = _position(self)
 		self.lever = sunrise(self)
 		self.coucher = sunset(self)
 		self.heure = datetime.now()
 		self.porte = ''
-		self.nom = id.name
-	
+		self.nom = self.id.name
+		self.telegram = telegram.init()
+		
 
 	def stateDoor(self):
 		""" détermine si la porte est ouverte ou fermée en fonction de l'horaire """
@@ -86,16 +80,78 @@ class init(object):
 		return self
 
 	def close(self):
-		gpio.output(id.gpioDown, gpio.HIGH)
-		gpio.output(id.gpioUp, gpio.LOW)
-		time.sleep(45)
-		pass
+		""" Fermeture de la porte via les GPIO """
+
+		# chargement des GPIO
+		gpio.setmode(gpio.BCM)
+		gpio.setwarnings(False)
+		gpio.setup(self.id.gpioUp, gpio.OUT)
+		gpio.setup(self.id.gpioDown, gpio.OUT)
+		gpio.setup(self.id.gpioUpCtrl, gpio.IN, pull_up_down=gpio.PUD_UP)
+		gpio.setup(self.id.gpioDownCtrl,gpio.IN, pull_up_down=gpio.PUD_UP)
+
+		# fermeture de la porte
+		gpio.output(self.id.gpioDown, gpio.HIGH)
+		gpio.output(self.id.gpioUp, gpio.LOW)
+		ctrl = gpio.wait_for_edge(self.id.gpioDownCtrl, gpio.FALLING, timeout=self.id.lentghDown*100)
+
+		# si le temps est épuisé
+		if ctrl is None:
+			self.telegram.send("Problème sur le poulailler " + self.nom + "il n'a pas pu se fermer" )
+			print('Timeout occurred')
+		# si tout se passe bien
+		else:
+			self.telegram.send("Fermeture du poulailler " + self.nom)
+
+		gpio.cleanup()
 	
 	def open(self):
-		gpio.output(id.gpioUp, gpio.HIGH)
-		gpio.output(id.gpioDown, gpio.LOW)
-		time.sleep(45)
-		pass
+		""" Ouverture de la porte via les GPIO """
+		
+		# chargement des GPIO
+		gpio.setmode(gpio.BCM)
+		gpio.setwarnings(False)
+		gpio.setup(self.id.gpioUp, gpio.OUT)
+		gpio.setup(self.id.gpioDown, gpio.OUT)
+		gpio.setup(self.id.gpioUpCtrl, gpio.IN, pull_up_down=gpio.PUD_UP)
+		gpio.setup(self.id.gpioDownCtrl,gpio.IN, pull_up_down=gpio.PUD_UP)
+
+		# ouverture de la porte
+		gpio.output(self.id.gpioUp, gpio.HIGH)
+		gpio.output(self.id.gpioDown, gpio.LOW)
+		ctrl = gpio.wait_for_edge(self.id.gpioUpCtrl, gpio.FALLING, timeout=self.id.lengthUp*100)
+
+		# si le temps est épuisé
+		if ctrl is None:
+			self.telegram.send("Problème sur le poulailler " + self.nom + "il n'a pas pu s'ouvrir" )
+		# si tout se passe bien
+		else:
+			self.telegram.send("Ouverture du poulailler " + self.nom)
+		
+		gpio.cleanup()
+
+	def modifieState(self):
+		""" Ouverture/Fermeture de la porte """
+
+		# On calcule le temps d'attente avant la prochain action
+		liste = [coq.lever, coq.coucher]
+		liste.sort()
+		wait = int(liste[0].timestamp()) - int(datetime.now().timestamp()) 
+		self.telegram.send("Prochaine action de " + self.nom + " à " + str(liste[0]))
+
+		# on met le programe en pause
+		time.sleep(wait+15)
+
+		# statut de la porte souhaité
+		self.stateDoor()
+
+		# controle et changement si nécessaire
+		if self.porte == 'opened':
+			print("Ouverture de la porte")
+			self.open()
+		elif self.porte == 'closed':
+			print("Fermeture de la porte")
+			self.close()
 
 if __name__ == '__main__':
 	coq = init()
