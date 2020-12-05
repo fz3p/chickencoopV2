@@ -93,7 +93,7 @@ class init(object):
 		# fermeture de la porte
 		gpio.output(self.id.gpioDown, gpio.HIGH)
 		gpio.output(self.id.gpioUp, gpio.LOW)
-		ctrl = gpio.wait_for_edge(self.id.gpioDownCtrl, gpio.FALLING, timeout=self.id.lentghDown*100)
+		ctrl = gpio.wait_for_edge(int(self.id.gpioDownCtrl), gpio.FALLING, timeout=self.id.lentghDown*100)
 
 		# si le temps est épuisé
 		if ctrl is None:

@@ -22,17 +22,17 @@ class init(object):
                 elif row[0] == 'LONGITUDE':
                     self.longitude = row[1]
                 elif row[0] == 'GPIOUP':
-                    self.gpioUp = row[1]
+                    self.gpioUp = int(row[1])
                 elif row[0] == 'GPIODOWN':
-                    self.gpioDown = row[1]
+                    self.gpioDown = int(row[1])
                 elif row[0] == 'GPIOUPCTRL':
-                    self.gpioUpCtrl = row[1]
+                    self.gpioUpCtrl = int(row[1])
                 elif row[0] == 'GPIODOWNCTRL':
-                    self.gpioDownCtrl = row[1]
+                    self.gpioDownCtrl = int(row[1])
                 elif row[0] == 'LENGTHUP':
-                    self.lengthUp = row[1]
+                    self.lengthUp = int(row[1])
                 elif row[0] == 'LENGTHDOWN':
-                    self.lentghDown = row[1]
+                    self.lentghDown = int(row[1])
                 elif row[0] == 'NAME':
                     self.name = row[1]
         
