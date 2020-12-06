@@ -101,7 +101,7 @@ class init(object):
 		# fermeture de la porte
 		gpio.output(self.id.gpioDown, gpio.HIGH)
 		gpio.output(self.id.gpioUp, gpio.LOW)
-		ctrl = gpio.wait_for_edge(self.id.gpioDownCtrl, gpio.FALLING, timeout=self.id.lengthDown*100)
+		ctrl = gpio.wait_for_edge(self.id.gpioDownCtrl, gpio.FALLING, timeout=self.id.lengthDown*1000)
 
 		# si le temps est épuisé
 		if ctrl is None:
@@ -110,6 +110,7 @@ class init(object):
 		# si tout se passe bien
 		else:
 			self.telegram.send("Fermeture du poulailler " + self.nom)
+			print("")
 
 		gpio.cleanup()
 	
@@ -127,7 +128,7 @@ class init(object):
 		# ouverture de la porte
 		gpio.output(self.id.gpioUp, gpio.HIGH)
 		gpio.output(self.id.gpioDown, gpio.LOW)
-		ctrl = gpio.wait_for_edge(self.id.gpioUpCtrl, gpio.FALLING, timeout=self.id.lengthUp*100)
+		ctrl = gpio.wait_for_edge(self.id.gpioUpCtrl, gpio.FALLING, timeout=self.id.lengthUp*1000)
 
 		# si le temps est épuisé
 		if ctrl is None:
