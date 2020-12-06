@@ -22,7 +22,7 @@ class init(object):
     """
     def __init__(self):
 
-        with open('identifiant.conf') as csvfile:
+        with open('home/pi/chickencoopV2/identifiant.conf') as csvfile:
             idReader = csv.reader(csvfile, delimiter=";", quotechar='"', )
             for row in idReader: 
                 if row[0] == 'IDBOT':
