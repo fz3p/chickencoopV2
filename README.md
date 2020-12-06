@@ -1,6 +1,5 @@
 # installation 
 
-
 ## Pré-requis
 
 ```
@@ -48,5 +47,9 @@ Ajouter deux lignes :
 0 1 * * * python3 /home/pi/checkencoopV2/poulailler.py
 ```
 
-pour le coucher je me suis basé sur l'horaire de coucher civil (-6°) du solstice d'hiver
+pour le coucher je me suis basé sur l'horaire de coucher civil (-6°) du solstice d'hiver, 
 pour le lever je me suis basé sur l'horaire de lever astronomique (-18) du solstice d'été
+
+# Site 
+
+https://journaldunarchiviste.fr

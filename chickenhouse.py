@@ -80,7 +80,11 @@ class init(object):
 		
 
 	def stateDoor(self):
-		""" détermine si la porte est ouverte ou fermée en fonction de l'horaire """
+		""" détermine si la porte est ouverte ou fermée en fonction de l'horaire 
+		Attention cela est en fonction de la date d'initialisation de l'objet. 
+		Sinon cela renvoie le prochain état.
+		"""
+
 		if self.lever.timestamp() < datetime.now().timestamp() < self.coucher.timestamp() :
 			self.porte = "opened"
 		else:
