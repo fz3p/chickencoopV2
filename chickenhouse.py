@@ -105,11 +105,11 @@ class init(object):
 
 		# si le temps est épuisé
 		if ctrl is None:
-			self.telegram.send("Problème sur le poulailler " + self.nom + "il n'a pas pu se fermer" )
+			self.telegram.send("Problème sur le poulailler " + self.nom + " : il n'a pas pu se fermer" )
 			print('Timeout occurred')
 		# si tout se passe bien
 		else:
-			self.telegram.send("Fermeture du poulailler " + self.nom)
+			self.telegram.send("Fermeture du poulailler : " + self.nom)
 			print("")
 
 		gpio.cleanup()
@@ -132,10 +132,10 @@ class init(object):
 
 		# si le temps est épuisé
 		if ctrl is None:
-			self.telegram.send("Problème sur le poulailler " + self.nom + "il n'a pas pu s'ouvrir" )
+			self.telegram.send("Problème sur le poulailler " + self.nom + " : il n'a pas pu s'ouvrir" )
 		# si tout se passe bien
 		else:
-			self.telegram.send("Ouverture du poulailler " + self.nom)
+			self.telegram.send("Ouverture du poulailler : " + self.nom)
 		
 		gpio.cleanup()
 

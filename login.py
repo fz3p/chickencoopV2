@@ -5,7 +5,21 @@ import os
 import csv
 
 class init(object):
-    """ récupère les identifiants dans un fichier séparé """
+    """ récupère les identifiants dans un fichier séparé
+
+    - bot : identifiant du bot Telegram
+    - chatID : identifiant du chat Telegram
+    - horizon : choix l'horizon
+    - latitude : en fonction de la localisation souhaité
+    - longitude : en fonction de la localisation souhaité
+    - gpioUp : numéro du GPIO pour la montée de la porte
+    - gpioDown : numéro du GPIO pour la descente de la porte
+    - gpioUpCtrl : numéro du GPIO pour le capteur de fin course de la montée
+    - gpioDownCtrl : numéro du GPIO pour le capteur de fin de course de la descente
+    - lengthUp : temps d'action du moteur pour la montée
+    - lengthDown : temps d'action du moteur pour la descente
+    - name : nom du poulailler.
+    """
     def __init__(self):
 
         with open('identifiant.conf') as csvfile:
@@ -46,6 +60,8 @@ if __name__ == '__main__':
     print(id.longitude)
     print(id.gpioUp)
     print(id.gpioDown)
+    print(id.lengthUp)
+    print(id.lengthDown)
     print(id.name)
 
 
