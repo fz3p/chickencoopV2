@@ -8,6 +8,6 @@ GPIOUP;17
 GPIODOWN;27
 GPIOUPCTRL;26
 GPIODOWNCTRL;24
-LENGHTUP; à compléter (en seconde)
-LENGHTDOWN;à compléter (en seconde)
+LENGTHUP; à compléter (en seconde)
+LENGTHDOWN;à compléter (en seconde)
 NAME;à compléter
