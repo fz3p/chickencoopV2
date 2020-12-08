@@ -1,0 +1,13 @@
+service;identifiant
+IDBOT;à compléter
+IDCHAT;à compléter
+HORIZON:-6
+LATITUDE;à compléter
+LONGITUDE;à compléter
+GPIOUP;17
+GPIODOWN;27
+GPIOUPCTRL;26
+GPIODOWNCTRL;24
+LENGTHUP; à compléter (en seconde)
+LENGTHDOWN;à compléter (en seconde)
+NAME;à compléter
