@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import os
+import sys
 import csv
 
 class init(object):
@@ -22,7 +23,7 @@ class init(object):
     """
     def __init__(self):
 
-        path = os.getcwd()+'/identifiant.conf'
+        path = os.path.dirname(sys.argv[0])'/identifiant.conf'
         with open(path) as csvfile:
             idReader = csv.reader(csvfile, delimiter=";", quotechar='"', )
             for row in idReader: 
@@ -61,6 +62,8 @@ if __name__ == '__main__':
     print(id.longitude)
     print(id.gpioUp)
     print(id.gpioDown)
+    print(id.gpioUpCtrl)
+    print(id.gpioDownCtrl)
     print(id.lengthUp)
     print(id.lengthDown)
     print(id.name)
