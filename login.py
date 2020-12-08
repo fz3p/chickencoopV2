@@ -23,7 +23,7 @@ class init(object):
     """
     def __init__(self):
 
-        path = os.path.dirname(sys.argv[0])'/identifiant.conf'
+        path = os.path.dirname(sys.argv[0])+'/identifiant.conf'
         with open(path) as csvfile:
             idReader = csv.reader(csvfile, delimiter=";", quotechar='"', )
             for row in idReader: 
