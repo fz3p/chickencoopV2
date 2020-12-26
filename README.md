@@ -13,8 +13,8 @@ pip3 install ephem requests
 ```
 git clone https://github.com/fz3p/chickecoopV2.git chickencoopV2
 cd chickencoopV2
-mv identifiant.conf.sample identifiant.conf
-nano identifiant.conf
+mv configuration.sample configuration.conf
+nano configuration.conf
 ```
 
 Editer les paramètres en fonction de votre configuration.
