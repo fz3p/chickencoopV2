@@ -184,8 +184,11 @@ class init(object):
 		liste = [self.lever, self.coucher]
 		liste.sort()
 		wait = int(liste[0].timestamp()) - int(datetime.now().timestamp()) 
-		self.telegram.send("Prochaine action de " + self.nom + " à " + str(liste[0]))
-
+		if force == False:
+			self.telegram.send("Prochaine action de " + self.nom + " à " + str(liste[0]))
+		elif force == True: 
+			self.telegram.send("Prochaine action forcée de " + self.nom + " à " + str(liste[0]))
+			
 		# on met le programe en pause
 		time.sleep(wait+15)
 
