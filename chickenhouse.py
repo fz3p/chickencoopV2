@@ -141,7 +141,43 @@ class init(object):
 		
 		gpio.cleanup()
 
-	def modifieState(self):
+	def closeForce(self):
+		""" Fermeture de la porte via les GPIO """
+
+		# chargement des GPIO
+		gpio.setmode(gpio.BCM)
+		gpio.setwarnings(False)
+		gpio.setup(self.id.gpioUp, gpio.OUT)
+		gpio.setup(self.id.gpioDown, gpio.OUT)
+
+		# fermeture de la porte
+		gpio.output(self.id.gpioDown, gpio.HIGH)
+		gpio.output(self.id.gpioUp, gpio.LOW)
+		time.sleep(self.id.lengthDown*1000)
+
+		self.telegram.send("Fermeture forcée du poulailler : " + self.nom)
+
+		gpio.cleanup()
+
+	def openForce(self):
+		""" Ouverture de la porte via les GPIO """
+		
+		# chargement des GPIO
+		gpio.setmode(gpio.BCM)
+		gpio.setwarnings(False)
+		gpio.setup(self.id.gpioUp, gpio.OUT)
+		gpio.setup(self.id.gpioDown, gpio.OUT)
+
+		# ouverture de la porte
+		gpio.output(self.id.gpioUp, gpio.HIGH)
+		gpio.output(self.id.gpioDown, gpio.LOW)
+		time.sleep(self.id.lengthUp*1000)
+
+		self.telegram.send("Ouverture forcée du poulailler : " + self.nom)
+		
+		gpio.cleanup()
+
+	def modifieState(self, force=False):
 		""" Ouverture/Fermeture de la porte à l'heure du prochain évènement"""
 
 		# On calcule le temps d'attente avant la prochain action
@@ -159,10 +195,16 @@ class init(object):
 		# controle et changement si nécessaire
 		if self.porte == 'opened':
 			print("Ouverture de la porte")
-			self.open()
+			if force == True:
+				self.openForce()
+			else: 
+				self.open()
 		elif self.porte == 'closed':
 			print("Fermeture de la porte")
-			self.close()
+			if force == True:
+				self.closeForce()
+			else:
+				self.close()
 
 if __name__ == '__main__':
 	coq = init()
