@@ -153,7 +153,7 @@ class init(object):
 		# fermeture de la porte
 		gpio.output(self.id.gpioDown, gpio.HIGH)
 		gpio.output(self.id.gpioUp, gpio.LOW)
-		time.sleep(self.id.lengthDown*1000)
+		time.sleep(self.id.lengthDown)
 
 		self.telegram.send("Fermeture forcée du poulailler : " + self.nom)
 
@@ -171,7 +171,7 @@ class init(object):
 		# ouverture de la porte
 		gpio.output(self.id.gpioUp, gpio.HIGH)
 		gpio.output(self.id.gpioDown, gpio.LOW)
-		time.sleep(self.id.lengthUp*1000)
+		time.sleep(self.id.lengthUp)
 
 		self.telegram.send("Ouverture forcée du poulailler : " + self.nom)
 		
